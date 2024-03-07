@@ -21,7 +21,6 @@ export async function POST(
             return new NextResponse("Unauthorized", { status: 401 });
         }
 
-
         if (!prompt) {
             return new NextResponse("Prompt is required", { status: 400 });
         }
