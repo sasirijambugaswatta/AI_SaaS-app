@@ -19,8 +19,10 @@ import {currentUser} from "@clerk/nextjs";
 import {Empty} from "@/components/empty";
 import {cn} from "@/lib/utils";
 import ReactMarkdown from "react-markdown"
+import {useProModal} from "@/hooks/use-pro-modal";
 
 const CodePage = () => {
+    const proModal = useProModal();
     const router = useRouter();
     const [messages, setMessages] = useState<ChatCompletionRequestMessage[]>([]);
     const form = useForm<z.infer<typeof formSchema>>({
@@ -47,7 +49,9 @@ const CodePage = () => {
             setMessages((current)=> [...current, userMessage, response.data])
 
         }catch (error:any){
-            console.log(error)
+            if(error?.response?.status === 403){
+                proModal.onOpen();
+            }
         }finally {
             router.refresh();
         }
