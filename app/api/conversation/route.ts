@@ -3,6 +3,7 @@ import { NextResponse } from "next/server";
 import OpenAI from "openai";
 
 import {increaseApiLimit , checkApiLimit} from "@/lib/api-limits";
+import {checkSubscription} from "@/lib/subscription";
 
 const openai = new OpenAI({
     apiKey: process.env.OPENAI_API_KEY,
@@ -29,8 +30,9 @@ export async function POST(
         }
 
         const freeTrail = await checkApiLimit();
+        const isPro = await checkSubscription();
 
-        if(!freeTrail){
+        if(!freeTrail && !isPro){
             return new NextResponse("Messages are required",{status: 403});
         }
 
@@ -39,7 +41,9 @@ export async function POST(
             messages
         });
 
-        await increaseApiLimit();
+        if(!isPro){
+            await increaseApiLimit();
+        }
 
         return NextResponse.json(response.choices[0].message);
 

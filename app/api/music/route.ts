@@ -4,6 +4,7 @@ import Replicate from "replicate";
 import * as process from "node:process";
 
 import {increaseApiLimit , checkApiLimit} from "@/lib/api-limits";
+import {checkSubscription} from "@/lib/subscription";
 
 const replicate = new Replicate({
     auth: process.env.REPLICATE_API_TOKEN!
@@ -27,8 +28,9 @@ export async function POST(
         }
 
         const freeTrail = await checkApiLimit();
+        const isPro = await checkSubscription();
 
-        if(!freeTrail){
+        if(!freeTrail && !isPro){
             return new NextResponse("Messages are required",{status: 403});
         }
 
@@ -46,7 +48,9 @@ export async function POST(
             }
         );
 
-        await increaseApiLimit();
+        if(!isPro){
+            await increaseApiLimit();
+        }
 
         return NextResponse.json(response);
 

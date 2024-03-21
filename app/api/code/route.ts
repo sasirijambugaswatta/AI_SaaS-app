@@ -4,6 +4,7 @@ import OpenAI from "openai";
 import ChatCompletionRequestMessage from "openai";
 
 import {increaseApiLimit , checkApiLimit} from "@/lib/api-limits";
+import {checkSubscription} from "@/lib/subscription";
 
 
 const openai = new OpenAI({
@@ -36,8 +37,9 @@ export async function POST(
         }
 
         const freeTrail = await checkApiLimit();
+        const isPro = await checkSubscription();
 
-        if(!freeTrail){
+        if(!freeTrail && !isPro){
             return new NextResponse("Messages are required",{status: 403});
         }
 
@@ -46,7 +48,9 @@ export async function POST(
             messages :[instructionMessage, ...messages]
         });
 
-        await increaseApiLimit();
+        if (!isPro){
+            await increaseApiLimit();
+        }
 
         return NextResponse.json(response.choices[0].message);
 
