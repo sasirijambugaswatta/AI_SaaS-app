@@ -1,8 +1,7 @@
 import {PrismaClient} from "@prisma/client";
-import * as process from "node:process";
 
-declare global{
-    let prisma: PrismaClient | undefined;
+declare global {
+    var prisma: PrismaClient | undefined;
 };
 
 const prismadb = globalThis.prisma || new PrismaClient();
