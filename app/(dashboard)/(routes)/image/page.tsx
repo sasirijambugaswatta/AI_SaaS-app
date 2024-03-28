@@ -7,7 +7,7 @@ import * as z from "zod";
 
 
 
-import {formSchema} from "@/app/(dashboard)/(routes)/conversation/constant";
+import {formSchema} from "@/app/(dashboard)/(routes)/image/constant";
 import {zodResolver} from "@hookform/resolvers/zod";
 import {Form, FormControl, FormField, FormItem} from "@/components/ui/form";
 import {Heading} from "@/components/heading";
@@ -23,6 +23,7 @@ import {Card, CardFooter} from "@/components/ui/card";
 import Image from "next/image";
 import {useProModal} from "@/hooks/use-pro-modal";
 import toast from "react-hot-toast";
+
 
 const ImagePage = () => {
     const proModal = useProModal();
@@ -153,7 +154,7 @@ const ImagePage = () => {
                             </div>)
                     }
                     {images.length === 0 && !isLoading && (
-                        <Empty label={"No images generated"}/>
+                        <div></div>
                     )}
                     <div className={"grid grid-cols-1 md:grid-cols-2 " +
                         "lg:grid-cols-3 xl:grid-cols-4 gap-4 mt-8"}>
