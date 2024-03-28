@@ -4,8 +4,6 @@ import React, {useState} from 'react';
 import {MessageSquare} from "lucide-react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
-import ChatCompletionRequestMessage from "openai";
-import ChatCompletionMessageMessage from "openai";
 
 import {formSchema} from "@/app/(dashboard)/(routes)/conversation/constant";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -20,6 +18,12 @@ import {Empty} from "@/components/empty";
 import {useProModal} from "@/hooks/use-pro-modal";
 import toast from "react-hot-toast";
 
+interface ChatCompletionRequestMessage {
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+    name?: string;
+}
+
 const ConversationPage = () => {
     const proModal = useProModal();
     const router = useRouter();
@@ -30,6 +34,7 @@ const ConversationPage = () => {
             prompt: ""
         }
     });
+
 
     const isLoading = form.formState.isSubmitting;
 

@@ -4,8 +4,8 @@ import React, {useState} from 'react';
 import {CodeIcon} from "lucide-react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
-import ChatCompletionRequestMessage from "openai";
-import ChatCompletionMessageMessage from "openai";
+
+
 
 import {formSchema} from "@/app/(dashboard)/(routes)/conversation/constant";
 import {zodResolver} from "@hookform/resolvers/zod";
@@ -21,6 +21,12 @@ import {cn} from "@/lib/utils";
 import ReactMarkdown from "react-markdown"
 import {useProModal} from "@/hooks/use-pro-modal";
 import toast from "react-hot-toast";
+
+interface ChatCompletionRequestMessage {
+    role: 'user' | 'assistant' | 'system';
+    content: string;
+    name?: string;
+}
 
 const CodePage = () => {
     const proModal = useProModal();
@@ -94,7 +100,7 @@ const CodePage = () => {
                 </div>
                 <div className={"space-y-4 mt-4"}>
                     {messages.length === 0 && !isLoading && (
-                        <Empty label={"No conversation Started"}/>
+                        <div>NO Conversation started</div>
                     )}
                     <div className={"flex flex-col-reverse gap-y-4"}>
                         {messages.map((message)=>(

@@ -4,7 +4,7 @@ import React, {useState} from 'react';
 import {Download, ImageIcon, Loader} from "lucide-react";
 import {useForm} from "react-hook-form";
 import * as z from "zod";
-import ChatCompletionRequestMessage from "openai";
+
 
 
 import {formSchema} from "@/app/(dashboard)/(routes)/conversation/constant";
